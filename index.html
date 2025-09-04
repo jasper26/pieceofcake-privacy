@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Piece Of Cake Slicer — Slice cakes evenly</title>
+  <meta name="description" content="Slice cakes into equal pieces — odd or even — with camera overlay. Simple, ad‑supported, no accounts.">
+  <style>
+    :root{--bg:#0f172a;--card:#111827;--txt:#e5e7eb;--muted:#9ca3af;--accent:#f59e0b}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:#0b1020;color:var(--txt);font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"}
+    a{color:#93c5fd}
+    .wrap{max-width:960px;margin:0 auto;padding:24px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .logo{display:flex;gap:10px;align-items:center}
+    .logo .mark{font-size:28px}
+    .title{font-weight:700;font-size:20px}
+    nav a{margin-left:16px;text-decoration:none}
+    .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center;margin-top:24px}
+    .card{background:linear-gradient(180deg,#0f172a,#0b1220);border:1px solid #1f2937;border-radius:16px;padding:24px}
+    h1{font-size:40px;line-height:1.1;margin:0 0 10px}
+    .tag{display:inline-block;background:#1f2937;border:1px solid #2b3544;padding:6px 10px;border-radius:999px;color:#cbd5e1;font-size:12px;margin-bottom:12px}
+    .lead{font-size:18px;color:#cbd5e1;margin:6px 0 16px}
+    .btns{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{background:var(--accent);color:#111827;border:none;border-radius:10px;padding:12px 16px;font-weight:700;text-decoration:none}
+    .btn.secondary{background:#1f2937;color:#e5e7eb;border:1px solid #2b3544}
+    .shot{background:#0b1220;border:1px solid #1f2937;border-radius:16px;height:320px;display:grid;place-items:center}
+    .shot canvas{width:88%;max-width:420px;height:auto}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+    .feat{border:1px solid #1f2937;background:#0b1220;border-radius:14px;padding:16px}
+    h2{font-size:20px;margin:0 0 8px}
+    footer{margin:36px 0 8px;color:#9ca3af;text-align:center;font-size:14px}
+    @media (max-width:860px){.hero{grid-template-columns:1fr}.shot{height:220px}h1{font-size:32px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><div class="mark">🍰</div><div class="title">Piece Of Cake Slicer</div></div>
+      <nav>
+        <a href="./support.html">Support</a>
+        <a href="./privacy-policy.html">Privacy</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="card">
+        <div class="tag">A simple camera overlay for perfect cake slices</div>
+        <h1>Slice cakes evenly — odd or even, your choice!</h1>
+        <p class="lead">Choose how many pieces you want, align the lines, and cut. No accounts, no sign‑ups — just clean guides and a friendly UI.</p>
+        <div class="btns">
+          <a class="btn" href="#" aria-disabled="true" title="Submit to App Store from your device">Download on the App Store (coming soon)</a>
+          <a class="btn secondary" href="./support.html">Get help</a>
+          <a class="btn secondary" href="./privacy-policy.html">Privacy policy</a>
+        </div>
+      </div>
+      <div class="shot">
+        <!-- simple canvas illustration of a sliced circle -->
+        <canvas id="shot" width="520" height="520" aria-label="Circle slice preview"></canvas>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="feat">
+        <h2>Quick controls</h2>
+        <p class="muted">Tap +/− to set slices from 2 to 36. Even slices use diameters; odd slices use radii.</p>
+      </div>
+      <div class="feat">
+        <h2>Clean overlay</h2>
+        <p class="muted">Adjust circle size, line width, and color for any plate or lighting.</p>
+      </div>
+      <div class="feat">
+        <h2>Privacy‑minded</h2>
+        <p class="muted">We use camera access only to draw the guide overlay — no photos are stored.</p>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="y"></span> Piece Of Cake Slicer • <a href="./support.html">Support</a> • <a href="./privacy-policy.html">Privacy</a>
+    </footer>
+  </div>
+
+  <script>
+    // year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // draw a simple sliced circle on canvas (12 slices)
+    const c = document.getElementById('shot');
+    const ctx = c.getContext('2d');
+    const w = c.width, h = c.height, r = Math.min(w,h)*0.36;
+    const cx = w/2, cy = h/2;
+    // outer circle
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#f8fafc';
+    ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+    // guides
+    const slices = 12;
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#f59e0b';
+    for(let i=0;i<slices;i++){
+      const a = (i/slices) * Math.PI*2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + r*Math.cos(a), cy + r*Math.sin(a));
+      ctx.stroke();
+    }
+  </script>
+</body>
+</html>
